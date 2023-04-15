@@ -52,14 +52,8 @@ Bei dem Verkaufsshop, können die gesammelten Itens verkauft werden. Hierbei kö
 *Position des Shops:*
 
 - Pos - `table`
-    - x - `int`
-        - x-Koordinate
-    - y - `int`
-        - y-Koordinate
-    - z - `int`
-        - z-Koordinate
-    - a - `int`
-        - a-Koordinate
+    - Coords - `vec4`
+        - Koordinaten des Shops
     - Bliplabel - `string`
         - Text der dem Spieler angezeigt wird, wenn dieser den Blip auswählt. 
 - Items - `table`
