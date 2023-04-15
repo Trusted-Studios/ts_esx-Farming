@@ -67,7 +67,7 @@ Bei dem Verkaufsshop, können die gesammelten Itens verkauft werden. Hierbei kö
 > Hier ein Beispiel für die Shop Konfigurationen: 
 ```lua
 Pos = {
-    {BlipLabel = 'Händler', Coords = vec4(386.06, -326.16, 46.87,160.01)}, 
+    {BlipLabel = 'Händler', Coords = vec4(386.06, -326.16, 46.87, 160.01)}, 
 }, 
 Items = {              
     {Label = "Kartoffeln", Value = "kartoffel", Price = 8},	
