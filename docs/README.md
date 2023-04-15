@@ -80,3 +80,9 @@ Items = {
 }
 ```
 
+---
+
+## Weitere Scripts: 
+
+Weitere Scripts könnt ihr auf unserem Discord finden: [Trusted Scripts](https://discord.gg/hmmM89nCdX) 
+
