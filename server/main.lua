@@ -31,7 +31,7 @@ RegisterServerEvent('gmw_sell:SellItem', function(item, reward, label)
         return 
     end 
     xPlayer.removeInventoryItem(item, xItem.count)
-    xPlayer.addMoney(reward)
+    xPlayer.addMoney(reward * xItem.count)
     TriggerClientEvent('esx:showNotification', source, ("Du hast ~y~"..xItem.count.." x "..label.."~w~ für insgesamt ~g~"..reward.."$~w~ verkauft"))
 end)
 
