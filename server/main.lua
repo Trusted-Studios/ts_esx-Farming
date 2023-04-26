@@ -37,5 +37,9 @@ end)
 
 RegisterNetEvent("gmw_farm:giveItem", function(item, count)
     local xPlayer <const> = ESX.GetPlayerFromId(source) 
+    if not xPlayer.canCarryItem(item, count) then 
+        TriggerClientEvent('esx:showNotification', source, ("~r~Du kannst keine Items mehr sammlen!"))
+        return 
+    end
     xPlayer.addInventoryItem(item, count)
 end) 
