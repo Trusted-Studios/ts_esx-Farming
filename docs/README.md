@@ -9,6 +9,8 @@
 
 # esx_GMW-Farming
 
+![image](https://media.discordapp.net/attachments/1115373809483133008/1115373809793503323/Screenshot_488.png?width=1246&height=701)
+
 ### Informationen: 
 
 Das Farming Script ist ein vielseitiges Tool, das für jeden Server geeignet ist. Es bietet zahlreiche Konfigurationsoptionen, die es dem Benutzer ermöglichen, das Script an seine spezifischen Bedürfnisse anzupassen. Das Script kann für verschiedene Arten von Farming-Aktivitäten verwendet werden, wie zum Beispiel das Sammeln von Ressourcen und der darauffolgende Verkauf. Das Farming Script ist ein unverzichtbares Script für jeden, der seine Farming-Aktivitäten automatisieren und optimieren möchte.
