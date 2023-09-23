@@ -4,6 +4,11 @@
         <img src="https://img.shields.io/discord/1068573047172374634?style=for-the-badge&logo=discord&labelColor=7289da&logoColor=white&color=2c2f33&label=Discord"/>
     </a>
 </p>
+<p align="center">
+    <a href="https://github.com/GermanWarthog/esx_GMW-Farming/releases/latest">
+        <img src="https://img.shields.io/github/release/GermanWarthog/esx_GMW-Farming" alt="GitHub release" data-pin-nopin="true">
+    </a>
+</p>
 
 ---
 
