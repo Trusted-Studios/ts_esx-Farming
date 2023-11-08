@@ -209,7 +209,3 @@ function Anim()
 	repeat Citizen.Wait(0) until HasAnimDictLoaded("random@atmrobberygen")
 	TaskPlayAnim(PlayerPedId(), "random@atmrobberygen", "a_atm_mugging", 8.0, 3.0, 2000, 0, 1, false, false, false)
 end
-
--- ════════════════════════════════════════════════════════════════════════════════════ --
---                          2023 © German.Warthog Development                           --
--- ════════════════════════════════════════════════════════════════════════════════════ --
