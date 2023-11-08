@@ -12,7 +12,7 @@
 
 ---
 
-# esx_GMW-Farming | [Documentation](https://docs.trusted-studios.eu/fivem/basic-farmin)
+# esx_GMW-Farming | [Documentation](https://docs.trusted-studios.eu/fivem/basic-farming)
 
 The FiveM Basic Farming Script is suitable for any server. It offers numerous configuration options that allow users to customize the script according to their specific needs. Whether it's resource gathering or selling, this indispensable script automates and optimizes farming activities.
 
