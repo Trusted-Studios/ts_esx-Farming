@@ -19,7 +19,7 @@ Config = {}
 -- ════════════════════════════════════════════════════════════════════════════════════ --
 
 Config.MenuPosition = "right"  -- "right" / "left"
-Config.EnableBlip = true -- "true" / "false"  
+Config.BlipEnable = "true" -- "true" / "false"  
 
 -- ════════════════════════════════════════════════════════════════════════════════════ --
 -- Farm Configuration  
