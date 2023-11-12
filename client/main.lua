@@ -140,9 +140,16 @@ RMenu.Add('gmw_menu', 'verkauf', RageUI.CreateSubMenu(RMenu:Get('gmw_menu', 'mai
 CreateThread(function()
     while true do 
         Wait(0)
+
+        if not RageUI.Visible(RMenu:Get('gmw_menu', 'main')) then 
+            Wait(250)
+            goto continue
+        end
+
         RageUI.IsVisible(RMenu:Get('gmw_menu', 'main'), true, true, true, function()
             RageUI.ButtonWithStyle("Items Verkaufen", "~b~Verkaufe Items", {RightLabel = "→→→"}, true, function() end, RMenu:Get('gmw_menu', 'verkauf'))
         end)
+
         RageUI.IsVisible(RMenu:Get("gmw_menu", 'verkauf'), true, true, true, function()
             for k, v in pairs(Config.Shop.Items) do 
                 RageUI.ButtonWithStyle(v.Label, "Item Verkaufen", {RightLabel = "Preis: ~g~"..v.Price.."$~w~ / ~g~Item"}, true, function(Hovered, Active, Selected)
@@ -154,6 +161,8 @@ CreateThread(function()
                 end)
             end
         end)
+
+        ::continue::
     end
 end)
 
@@ -165,7 +174,7 @@ CreateThread(function()
             
             local ped = PlayerPedId()
             local playerCoords = GetEntityCoords(ped)
-            local x, y, z = table.unpack(v.coords)
+            local x, y, z = table.unpack(v.Coords)
             local distance = Vdist(playerCoords, x, y, z)
 
             if distance > 12 then 
