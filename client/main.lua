@@ -33,18 +33,12 @@ local MenuPosition = Config.MenuPosition
 -- Blips 
 -- ════════════════════════════════════════════════════════════════════════════════════ --
 
-Citizen.CreateThread(function()
-    if Config.BlipEnable == "true" then
+CreateThread(function()
+    if Config.EnableBlip == true then
         for k, v in pairs(Config.Farm.Type) do 
             local x, y, z = table.unpack(v.coords)
-            local blip = AddBlipForCoord(x, y, z)
-            SetBlipSprite(blip, v.BlipNumber)
-            SetBlipScale (blip, 0.7)
-            SetBlipColour(blip, 0)
-            SetBlipAsShortRange(blip, true)
-            BeginTextCommandSetBlipName('STRING')
-            AddTextComponentSubstringPlayerName(v.BlipLabel)
-            EndTextCommandSetBlipName(blip)
+
+            AddBlip(x, y, z, v.BlipNumber, 0.7, 0, v.BlipLabel)
         end
     end
 end)
@@ -53,31 +47,43 @@ end)
 -- Farmen
 -- ════════════════════════════════════════════════════════════════════════════════════ --
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do 
-        Citizen.Wait(0)
+        Wait(0)
         for k, v in pairs(Config.Farm.Type) do 
-            local playerPed = PlayerPedId()
-            local playercoords = GetEntityCoords(playerPed)
+            
+            local ped = PlayerPedId()
+            local playercoords = GetEntityCoords(ped)
             local x, y, z = table.unpack(v.coords)
             local distance = Vdist(playercoords, x, y, z)
-            if distance < 12 then 
-                ShowHelp("Drücke ~INPUT_CONTEXT~ um ~y~" ..v.Label.. "~w~ zu farmen", true)
-                if IsControlJustPressed(0, 38) then
-                    Notify("Du sammelts jetzt ~y~" ..v.Count.. "~w~ " ..v.Label)
-                    local ped = PlayerPedId()
-                    TaskStartScenarioInPlace(ped, v.Anim, 0, true)
-                    Citizen.Wait(v.Time)
-                    ClearPedTasksImmediately(ped)
-                    PlaySound(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
-                    PlaySoundFrontend(-1, "MEDAL_GOLD", "HUD_AWARDS", 0);
-                    Notify("Du hast " ..v.Count.. " ~g~" ..v.Label.. "~w~ Gesammelt")
-                    local item = v.Value 
-                    local count = v.Count
-                    TriggerServerEvent("gmw_farm:giveItem", item, count)
-                end 
+
+            if distance > 12 then 
+                Wait(1000)
+                goto continue
             end
+            
+            ShowHelp("Drücke ~INPUT_CONTEXT~ um ~y~" ..v.Label.. "~w~ zu farmen", true)
+            if IsControlJustPressed(0, 38) then
+                local item = v.Value
+                local itemLabel = v.Label
+                local count = v.Count
+
+                Notify("Du sammelts jetzt ~y~" ..count.. "~w~ " ..itemLabel)
+                
+                TaskStartScenarioInPlace(ped, v.Anim, 0, true)
+                Wait(v.Time)
+                ClearPedTasksImmediately(ped)
+                
+                PlaySound(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+                PlaySoundFrontend(-1, "MEDAL_GOLD", "HUD_AWARDS", 0);
+                
+                Notify("Du hast " ..count.. " ~g~" ..itemLabel.. "~w~ Gesammelt")
+                
+                TriggerServerEvent("gmw_farm:giveItem", item, count)
+            end 
         end
+
+        ::continue::
     end
 end)
 
@@ -97,15 +103,18 @@ if MenuPosition then
     end
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
     local hash = GetHashKey("mp_m_shopkeep_01")
+    
     while not HasModelLoaded(hash) do 
         RequestModel(hash)
-        Citizen.Wait(20)
+        Wait(20)
     end 
+    
     for k, v in pairs(Config.Shop.Pos) do 
         local x, y, z, h = table.unpack(v.Coords)
         local ped <const> = CreatePed(-1, "mp_m_shopkeep_01", x, y, z - 1, h, false, true)
+    
         SetBlockingOfNonTemporaryEvents(ped, true)
         FreezeEntityPosition(ped, true)
         SetEntityInvincible(ped, true)
@@ -115,9 +124,9 @@ end)
 RMenu.Add('gmw_menu', 'main', RageUI.CreateMenu("Items verkaufen", "~b~Verkaufe deine Items", menuPosition["x"], menuPosition["y"]))
 RMenu.Add('gmw_menu', 'verkauf', RageUI.CreateSubMenu(RMenu:Get('gmw_menu', 'main'), "Verkaufen", "~b~Verkaufe Items", menuPosition["x"], menuPosition["y"]))
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do 
-        Citizen.Wait(0)
+        Wait(0)
         RageUI.IsVisible(RMenu:Get('gmw_menu', 'main'), true, true, true, function()
             RageUI.ButtonWithStyle("Items Verkaufen", "~b~Verkaufe Items", {RightLabel = "→→→"}, true, function() end, RMenu:Get('gmw_menu', 'verkauf'))
         end)
@@ -126,11 +135,8 @@ Citizen.CreateThread(function()
                 RageUI.ButtonWithStyle(v.Label, "Item Verkaufen", {RightLabel = "Preis: ~g~"..v.Price.."$~w~ / ~g~Item"}, true, function(Hovered, Active, Selected)
                     if Selected then
                         RageUI.CloseAll()
-                        local ItemValue = v.Value 
-                        local ItemLabel = v.Label
-                        local ItemPrice = v.Price
                         Anim()
-                        TriggerServerEvent('gmw_sell:SellItem', ItemValue, ItemPrice, ItemLabel)
+                        TriggerServerEvent('gmw_sell:SellItem', v.Value, v.Price, v.Label)
                     end
                 end)
             end
@@ -138,40 +144,39 @@ Citizen.CreateThread(function()
     end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(0) 
+        Wait(0) 
         for k, v in pairs(Config.Shop.Pos) do  
+            
             local playerPed = PlayerPedId()
             local playercoords = GetEntityCoords(playerPed)
             local x, y, z = table.unpack(v.Coords)
             local distance = Vdist(playercoords, x, y, z)
-            if distance < 8 then 
-                DrawMarker(1, x - 0.2, y - 0.8, z - 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.6, 0.6, 0.5, 0, 191, 255, 100, false, true, 2, false, nil, nil, false)
-                if distance < 3.0 then 
-                    ShowHelp("Drücke ~INPUT_CONTEXT~ um mit dem ~y~Käufer~w~ zu interagieren", true)
-                    if IsControlJustReleased(0, 38) then -- [E]
-                        if distance < 3.0 then
-                            RageUI.Visible(RMenu:Get('gmw_menu', 'main'), not RageUI.Visible(RMenu:Get('gmw_menu', 'main')))
-                        end
-                    end
+            
+            if distance > 8 then 
+                Wait(1000)
+                goto continue
+            end
+            
+            DrawMarker(1, x - 0.2, y - 0.8, z - 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.6, 0.6, 0.5, 0, 191, 255, 100, false, true, 2, false, nil, nil, false)
+            
+            if distance < 3 then 
+                ShowHelp("Drücke ~INPUT_CONTEXT~ um mit dem ~y~Käufer~w~ zu interagieren", true)
+                if IsControlJustReleased(0, 38) then -- [E]
+                    RageUI.Visible(RMenu:Get('gmw_menu', 'main'), not RageUI.Visible(RMenu:Get('gmw_menu', 'main')))
                 end
             end
+
+            ::continue::
         end
     end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     for k, v in pairs(Config.Shop.Pos) do 
         local x, y, z = table.unpack(v.Coords)
-        local blip = AddBlipForCoord(x, y, z)
-        SetBlipSprite(blip, 280)
-		SetBlipScale (blip, 1.0)
-		SetBlipColour(blip, 0)
-		SetBlipAsShortRange(blip, true)
-		BeginTextCommandSetBlipName('STRING')
-		AddTextComponentSubstringPlayerName(v.BlipLabel)
-		EndTextCommandSetBlipName(blip)
+        AddBlip(x, y, z, 280, 1.0, 0, v.BlipLabel)
     end
 end)
 
@@ -179,33 +184,56 @@ end)
 -- functions 
 -- ════════════════════════════════════════════════════════════════════════════════════ --
 
--- notification
+--- Displays a notifcation
+---@param text string
 function Notify(text)
     BeginTextCommandThefeedPost("STRING")
     AddTextComponentSubstringKeyboardDisplay(text)
     EndTextCommandThefeedPostTicker(true, true)
 end
 
--- Left corner help message
+--- Displays the native help notification on the top-left side of the screen
+---@param text string
+---@param bleep boolean
 function ShowHelp(text, bleep)
     BeginTextCommandDisplayHelp("STRING")
     AddTextComponentSubstringPlayerName(text)
     EndTextCommandDisplayHelp(0, false, bleep, -1)
 end
 
--- Play Animation 
+--- Loads animation dictionary
+---@param dict string
 function LoadAnimDict(dict)
 	if not HasAnimDictLoaded(dict) then
 		RequestAnimDict(dict)
 		while not HasAnimDictLoaded(dict) do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end
 end
 
--- anim 
+--- Plays the farming animation 
 function Anim()
 	RequestAnimDict("random@atmrobberygen")
-	repeat Citizen.Wait(0) until HasAnimDictLoaded("random@atmrobberygen")
+	repeat Wait(0) until HasAnimDictLoaded("random@atmrobberygen")
 	TaskPlayAnim(PlayerPedId(), "random@atmrobberygen", "a_atm_mugging", 8.0, 3.0, 2000, 0, 1, false, false, false)
+end
+
+--- Adds a Blip
+---@param x number
+---@param y number
+---@param z number
+---@param id number
+---@param scale number
+---@param colour number
+---@param label string
+function AddBlip(x, y, z, id, scale, colour, label)
+    local blip = AddBlipForCoord(x, y, z)
+    SetBlipSprite(blip, id)
+    SetBlipScale (blip, scale)
+    SetBlipColour(blip, colour)
+    SetBlipAsShortRange(blip, true)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentSubstringPlayerName(label)
+    EndTextCommandSetBlipName(blip)
 end
