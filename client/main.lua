@@ -48,21 +48,24 @@ end)
 -- ════════════════════════════════════════════════════════════════════════════════════ --
 
 CreateThread(function()
+    local isNearPoint = false
     while true do 
         Wait(0)
-        for k, v in pairs(Config.Farm.Type) do 
+        for index, v in pairs(Config.Farm.Type) do 
             
             local ped = PlayerPedId()
-            local playercoords = GetEntityCoords(ped)
+            local playerCoords = GetEntityCoords(ped)
             local x, y, z = table.unpack(v.coords)
-            local distance = Vdist(playercoords, x, y, z)
+            local distance = Vdist(playerCoords, x, y, z)
 
             if distance > 12 then 
-                Wait(1000)
                 goto continue
             end
+
+            isNearPoint = true
             
             ShowHelp("Drücke ~INPUT_CONTEXT~ um ~y~" ..v.Label.. "~w~ zu farmen", true)
+            
             if IsControlJustPressed(0, 38) then
                 local item = v.Value
                 local itemLabel = v.Label
@@ -81,9 +84,19 @@ CreateThread(function()
                 
                 TriggerServerEvent("gmw_farm:giveItem", item, count)
             end 
+
+            if isNearPoint then
+                break
+            end
+            
+            ::continue::
         end
 
-        ::continue::
+        if not isNearPoint then 
+            Wait(1500)
+        end
+
+        isNearPoint = false
     end
 end)
 
@@ -145,19 +158,21 @@ CreateThread(function()
 end)
 
 CreateThread(function()
-    while true do
-        Wait(0) 
-        for k, v in pairs(Config.Shop.Pos) do  
+    local isNearPoint = false
+    while true do 
+        Wait(0)
+        for index, v in pairs(Config.Shop.Pos) do 
             
-            local playerPed = PlayerPedId()
-            local playercoords = GetEntityCoords(playerPed)
-            local x, y, z = table.unpack(v.Coords)
-            local distance = Vdist(playercoords, x, y, z)
-            
-            if distance > 8 then 
-                Wait(1000)
+            local ped = PlayerPedId()
+            local playerCoords = GetEntityCoords(ped)
+            local x, y, z = table.unpack(v.coords)
+            local distance = Vdist(playerCoords, x, y, z)
+
+            if distance > 12 then 
                 goto continue
             end
+
+            isNearPoint = true
             
             DrawMarker(1, x - 0.2, y - 0.8, z - 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.6, 0.6, 0.5, 0, 191, 255, 100, false, true, 2, false, nil, nil, false)
             
@@ -168,8 +183,19 @@ CreateThread(function()
                 end
             end
 
+            if isNearPoint then
+                break
+            end
+            
             ::continue::
         end
+
+        if not isNearPoint then 
+            Wait(1500)
+        end
+
+        isNearPoint = false
+
     end
 end)
 
