@@ -141,7 +141,7 @@ CreateThread(function()
     while true do 
         Wait(0)
 
-        if not RageUI.Visible(RMenu:Get('gmw_menu', 'main')) then 
+        if not RageUI.Visible(RMenu:Get('gmw_menu', 'main')) and not RageUI.Visible(RMenu:Get('gmw_menu', 'verkauf')) then 
             Wait(250)
             goto continue
         end
