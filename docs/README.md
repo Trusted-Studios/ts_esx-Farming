@@ -1,4 +1,5 @@
-![image](https://media.discordapp.net/attachments/985134187600297986/1154892454550585374/trusted-banner.png?width=1440&height=465)
+![trusted-banner](https://github.com/Trusted-Studios/ts_esx-Farming/assets/79488475/2e55e4fe-7a0f-41a9-9da3-4d749efd5015)
+
 <p align="center">
     <a href="https://discord.gg/hmmM89nCdX">
         <img src="https://img.shields.io/discord/1068573047172374634?style=for-the-badge&logo=discord&labelColor=7289da&logoColor=white&color=2c2f33&label=Discord"/>
@@ -16,5 +17,6 @@
 
 The FiveM Basic Farming Script is suitable for any server. It offers numerous configuration options that allow users to customize the script according to their specific needs. Whether it's resource gathering or selling, this indispensable script automates and optimizes farming activities.
 
-![image](https://media.discordapp.net/attachments/1115373809483133008/1115373809793503323/Screenshot_488.png?width=1246&height=701)
+![basic-farming-2](https://github.com/Trusted-Studios/ts_esx-Farming/assets/79488475/b90be056-127d-488c-b8bf-662155b752f0)
+
 
